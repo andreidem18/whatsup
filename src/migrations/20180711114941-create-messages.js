@@ -15,6 +15,7 @@ module.exports = {
           model: "users",
           key: "id",
         },
+        onDelete: 'cascade'
       },
       room_id: {
         type: Sequelize.INTEGER,
@@ -22,6 +23,7 @@ module.exports = {
           model: "rooms",
           key: "id",
         },
+        onDelete: 'cascade'
       },
       text: {
         type: Sequelize.STRING,

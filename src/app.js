@@ -21,16 +21,18 @@ app.use("/api/v1", routes.authRoutes, routes.roomRoutes);
 app.use((err, req, res, next) => {
     console.log(err.stack);
     switch(err.name){
-        case '': 
+        case 'SequelizeValidationError': 
             const errObj = { message: "Validation Error", errors: [] };
             err.errors.map( er => {
                 errObj.errors.push({[er.path]: er.message});
             })
             return res.status(403).send(errObj);
         case 'SequelizeUniqueConstraintError':
-            return res.status(403).send({message: "Ya existe un registro con el mismo valor"});
+            return res.status(403).send({message: "Ya existe un registro con el mismo valor."});
+        case 'TokenExpiredError':
+            return res.status(401).send({message: "El token ha expirado."});
         default:
-            return res.status(500).send('Ups tenemos un problema en el servidor, intentalo más tarde!');
+            return res.status(500).send('Server error');
     }
 });
 

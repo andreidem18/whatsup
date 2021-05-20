@@ -42,8 +42,6 @@ authController.signIn = async (req, res, next) => {
 authController.signUp = async (req, res, next) => {
   const { firstname, lastname, screenname, email, password } = req.body;
 
-  console.log(req.body);
-
   try{
     const [user, created] = await User.findOrCreate({
       where: {
@@ -53,8 +51,6 @@ authController.signUp = async (req, res, next) => {
         firstname, lastname, screenname, screenname, email, password
       }
     });
-
-    console.log(user, created);
 
     if(!created){
       return res.status(409).json({

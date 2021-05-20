@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: {
           name: "userId",
           field: "user_id",
-        },
+          allowNull: false
+        }
       });
     }
     // method to generate hash password
