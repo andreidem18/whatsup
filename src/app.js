@@ -2,6 +2,8 @@ const path = require("path");
 const express = require("express");
 const models = require("./models");
 const routes = require("./routes");
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocs = require('../swagger.json');
 require('dotenv').config();
 
 const app = express();
@@ -10,6 +12,7 @@ app.set("port", process.env.PORT || 8080);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/public/", express.static(path.join(__dirname, "public")));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.get("/", (req, res) => {
     res.json({"api": "1.0.0"});

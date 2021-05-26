@@ -18,7 +18,7 @@ beforeAll(async () => {
     token = response.body.token;
 })
 
-describe("FuncionalroomIdad de las salas de chat", () => {
+describe("Funcionalidad de las salas de chat", () => {
     it("Crear la sala de chat Vengadores", async(done) => {
         const room = {
             name: "Vengadores",
@@ -208,5 +208,3 @@ afterAll(async() => {
     await Room.destroy({where: {id: roomId}});
 });
 
-// Usar la función beforeAll para poder iniciar sesión y guardar token
-//Usar la función beforeAll para poder registrar 2 usuarios antes de las pruebas sobre el set "Miembros de una sala de chat"

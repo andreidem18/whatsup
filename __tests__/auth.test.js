@@ -3,7 +3,7 @@ const supertest = require('supertest');
 const {User} = require("../src/models");
 
 const request = supertest(app);
-let id = 4;
+let id = 0;
 let token = "";
 
 describe("Flujo de registro", () => {
@@ -20,6 +20,8 @@ describe("Flujo de registro", () => {
         id = response.body.id;
 
         expect(response.status).toBe(201);
+        expect(response.body).toHaveProperty("firstname", "Pedro");
+        expect(response.body).toHaveProperty("id");
 
         done();
     });

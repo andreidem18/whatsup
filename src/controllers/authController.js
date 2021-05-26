@@ -3,6 +3,31 @@ const { User } = require("../models");
 
 const authController = {};
 
+authController.signUp = async (req, res, next) => {
+  const { firstname, lastname, screenname, email, password } = req.body;
+
+  try{
+    const [user, created] = await User.findOrCreate({
+      where: {
+        email: email
+      },
+      defaults: {
+        firstname, lastname, screenname, screenname, email, password
+      }
+    });
+
+    if(!created){
+      return res.status(409).json({
+        message: "User exists!"
+      });
+    }
+    return res.status(201).json(user);
+
+  }catch(error){
+    next(error);
+  }
+};
+
 authController.signIn = async (req, res, next) => {
   
   const { email, password } = req.body;
@@ -34,31 +59,6 @@ authController.signIn = async (req, res, next) => {
 
       return res.status(200).json({ user: userData, token });
     }
-  }catch(error){
-    next(error);
-  }
-};
-
-authController.signUp = async (req, res, next) => {
-  const { firstname, lastname, screenname, email, password } = req.body;
-
-  try{
-    const [user, created] = await User.findOrCreate({
-      where: {
-        email: email
-      },
-      defaults: {
-        firstname, lastname, screenname, screenname, email, password
-      }
-    });
-
-    if(!created){
-      return res.status(409).json({
-        message: "User exists!"
-      });
-    }
-    return res.status(201).json(user);
-
   }catch(error){
     next(error);
   }
