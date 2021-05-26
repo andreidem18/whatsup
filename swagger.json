@@ -1,0 +1,307 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Whatsup REST API",
+        "version": "1.0",
+        "description": "REST API to handle a chat"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api/v1",
+            "description": "Development"
+        }
+    ],
+    "paths": {
+        "/signup": {
+            "post": {
+                "description": "To add a new user",
+                "responses": {
+                    "201": {
+                        "description": "user added correctly"
+                    }
+                },
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "tags": ["User"]
+            }
+        },
+        "/signin": {
+            "post": {
+                "description": "To login",
+                "responses": {
+                    "201": {
+                        "description": "User logged correctly"
+                    }
+                },
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/Login"
+                            }
+                        }
+                    }
+                },
+                "tags": ["User"]
+            }
+        },
+        "/user": {
+            "get": {
+                "description": "To get the logged user",
+                "responses": {
+                    "200": {
+                        "description": "user gotten correctly"
+                    }
+                },
+                "security": [{
+                    "jwt_token": []
+                }],
+                "tags": ["User"]
+            }
+        },
+        "/rooms": {
+            "get": {
+                "description": "To get all rooms, with their members",
+                "responses": {
+                    "200": {
+                        "description": "Rooms gotten correctly"
+                    }
+                },
+                "security": [{
+                    "jwt_token": []
+                }],
+                "tags": ["Room"]
+            },
+            "post": {
+                "description": "To create a new room",
+                "responses": {
+                    "201": {
+                        "description": "Room created correctly"
+                    }
+                },
+                "security": [{
+                    "jwt_token": []
+                }],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/Room"
+                            }
+                        }
+                    }
+                },
+                "tags": ["Room"]
+            }
+        },
+        "/rooms/{id}":{
+            "delete":{
+                "description": "To delete a room",
+                "parameters": [
+                    {"in": "path", "required": true, "name": "id", "schema": {"type": "integer"}}
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Rooms gotten correctly"
+                    }
+                },
+                "tags": ["Room"]
+            }
+        },
+        "/rooms/{id}/addMembers": {
+            "post": {
+                "description": "To add members to the room with the id of the params",
+                "parameters": [
+                    {"in": "path", "required": true, "name": "id", "schema": {"type": "integer"}}
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Members added correctly"
+                    }
+                },
+                "security": [{
+                    "jwt_token": []
+                }],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/AddMembers"
+                            }
+                        }
+                    }
+                },
+                "tags": ["Room"]
+            }
+        },
+        "/rooms/{id}/deleteMembers": {
+            "post": {
+                "description": "To delete members from the room with the id of the params",
+                "parameters": [
+                    {"in": "path", "required": true, "name": "id", "schema": {"type": "integer"}}
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Member deleted correctly"
+                    }
+                },
+                "security": [{
+                    "jwt_token": []
+                }],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/DeleteMembers"
+                            }
+                        }
+                    }
+                },
+                "tags": ["Room"]
+            }
+        },
+        "/rooms/{id}/sendMessage":{
+            "post": {
+                "description": "To send a message",
+                "parameters": [
+                    {"in": "path", "required": true, "name": "id", "schema": {"type": "integer"}}
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Message sent correctly"
+                    }
+                },
+                "security": [{
+                    "jwt_token": []
+                }],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/Message"
+                            }
+                        }
+                    }
+                },
+                "tags": ["Room"]
+            }
+        },
+        "/rooms/{id}/messages":{
+            "get":{
+                "description": "To get all messages from a room",
+                "parameters": [
+                    {"in": "path", "required": true, "name": "id", "schema": {"type": "integer"}}
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Messages gotten correctly"
+                    }
+                },
+                "security": [{
+                    "jwt_token": []
+                }],
+                "tags": ["Room"]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "jwt_token":{
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {
+            "User":{
+                "properties": {
+                    "firstname":{
+                        "type": "string",
+                        "example": "Roberto"
+                    },
+                    "lastname": {
+                        "type": "string",
+                        "example": "Sanchez"
+                    },
+                    "screenname": {
+                        "type": "string",
+                        "example": "Roberto007"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "roberto007@hotmail.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "roberto123"
+                    }
+                }
+            },
+            "Login":{
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "JohnDoe@gmail.com"
+                    },
+                    "password":{
+                        "type": "string",
+                        "example": "root"
+                    }
+                }
+            },
+            "Room":{
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Team Python"
+                    },
+                    "screenname": {
+                        "type": "string",
+                        "example": "colegas"
+                    },
+                    "private": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "avatar": {
+                        "type": "string",
+                        "description": "url to an image which represent the room, if you don't put one, the database put one by default",
+                        "example": "http:localhost:8000/public/static/img/uploads/user.jpg"
+                    }
+                }
+            },
+            "AddMembers":{
+                "properties": {
+                    "members": {
+                        "type": "array",
+                        "description": "Array with the member's id",
+                        "example": [1, 2]
+                    }
+                }
+            },
+            "DeleteMembers":{
+                "properties": {
+                    "member_id":{
+                        "type": "integer",
+                        "example": 1
+                    }
+                }
+            },
+            "Message":{
+                "properties": {
+                    "text":{
+                        "type": "string",
+                        "example": "Hello world people!"
+                    }
+                }
+            }
+        }
+    }
+}

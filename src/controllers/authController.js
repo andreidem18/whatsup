@@ -3,9 +3,38 @@ const { User } = require("../models");
 
 const authController = {};
 
+authController.signUp = async (req, res, next) => {
+  const { firstname, lastname, screenname, email, password } = req.body;
+
+  try{
+    const [user, created] = await User.findOrCreate({
+      where: {
+        email: email
+      },
+      defaults: {
+        firstname, lastname, screenname, screenname, email, password
+      }
+    });
+
+    console.log(user, created);
+
+    if(!created){
+      return res.status(409).json({
+        message: "User exists!"
+      });
+    }
+    return res.status(201).json(user);
+
+  }catch(error){
+    next(error);
+  }
+};
+
 authController.signIn = async (req, res, next) => {
   
   const { email, password } = req.body;
+
+  console.log("request.body:", req.body);
 
   if (email === "" || password === "") {
     return res.status(403).json({ message: "empty fields" });
@@ -34,35 +63,6 @@ authController.signIn = async (req, res, next) => {
 
       return res.status(200).json({ user: userData, token });
     }
-  }catch(error){
-    next(error);
-  }
-};
-
-authController.signUp = async (req, res, next) => {
-  const { firstname, lastname, screenname, email, password } = req.body;
-
-  console.log(req.body);
-
-  try{
-    const [user, created] = await User.findOrCreate({
-      where: {
-        email: email
-      },
-      defaults: {
-        firstname, lastname, screenname, screenname, email, password
-      }
-    });
-
-    console.log(user, created);
-
-    if(!created){
-      return res.status(409).json({
-        message: "User exists!"
-      });
-    }
-    return res.status(201).json(user);
-
   }catch(error){
     next(error);
   }

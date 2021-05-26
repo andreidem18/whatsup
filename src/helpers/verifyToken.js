@@ -20,3 +20,12 @@ module.exports = function verifyToken(req, res, next) {
   return res.status(401).json({message: "El token no ha sido proporcionado"});
 
 };
+
+// jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+//   if(err){
+//     return res.status(401).json({message: "El token es invalido"});
+//   } else {
+//     req.user = decoded;          
+//     return next(); 
+//   }
+// });
