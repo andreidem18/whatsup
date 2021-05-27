@@ -24,10 +24,7 @@ module.exports = {
           model: "users",
           key: "id",
         },
-<<<<<<< HEAD
         onDelete: 'cascade'
-=======
->>>>>>> 3b96a4a685fa5c131b00d1fa5f8d63985a1b2f7d
       },
       private: {
         type: Sequelize.BOOLEAN,

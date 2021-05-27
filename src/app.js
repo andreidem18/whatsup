@@ -15,7 +15,7 @@ app.use("/public/", express.static(path.join(__dirname, "public")));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.get("/", (req, res) => {
-    res.json({"api": "1.0.0"});
+    res.json({"api_chat": "1.0.0"});
 });
 
 app.use("/api/v1", routes.authRoutes, routes.roomRoutes);
